@@ -1,0 +1,15 @@
+.castList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.castItem {
+  width: 150px;
+  text-align: center;
+}
+
+.actorImage {
+  width: 100%;
+  border-radius: 5px;
+}

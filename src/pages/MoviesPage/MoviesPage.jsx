@@ -1,37 +1,56 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import axios from "axios";
 import MovieList from "../../components/MovieList/MovieList";
-import s from "./MoviesPage.module.css";
+import styles from "./MoviesPage.module.css";
+import { API_KEY } from "../MovieDetailsPage/MovieDetailsPage";
 
 const MoviesPage = () => {
-  const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    const response = await axios.get(
-      `https://api.themoviedb.org/3/search/movie?query=${query}`,
-      {
-        headers: {
-          Authorization: "Bearer eyJhbGciOiJI...Upk",
-        },
+  const searchQuery = searchParams.get("query") || "";
+
+  useEffect(() => {
+    if (!searchQuery) return;
+
+    const fetchMoviesByQuery = async () => {
+      try {
+        const response = await axios.get(
+          `https://api.themoviedb.org/3/search/movie?query=${searchQuery}`,
+          {
+            headers: {
+              Authorization: `Bearer ${API_KEY}`,
+            },
+          }
+        );
+        setMovies(response.data.results);
+      } catch (error) {
+        console.error("Failed to fetch movies by query", error);
       }
-    );
-    setMovies(response.data.results);
+    };
+
+    fetchMoviesByQuery();
+  }, [searchQuery]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setSearchParams({ query });
   };
 
   return (
-    <div className={s.container}>
-      <form onSubmit={handleSearch}>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className={s.input}
+          placeholder="Search movies..."
         />
         <button type="submit">Search</button>
       </form>
-      {movies.length > 0 && <MovieList movies={movies} />}
+      <MovieList movies={movies} />
     </div>
   );
 };

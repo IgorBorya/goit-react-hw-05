@@ -1,7 +1,24 @@
+/* src/pages/MoviesPage/MoviesPage.module.css */
 .container {
   padding: 20px;
 }
 
-.input {
+.form {
+  margin-bottom: 20px;
+}
+
+input {
+  padding: 10px;
   margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
 }

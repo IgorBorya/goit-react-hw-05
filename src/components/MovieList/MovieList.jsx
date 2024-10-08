@@ -1,22 +1,26 @@
+import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
-import s from "./MovieList.module.css";
+import styles from "./MovieList.module.css";
 
 const MovieList = ({ movies }) => {
   return (
-    <ul className={s.list}>
+    <ul className={styles.movieList}>
       {movies.map((movie) => (
-        <li key={movie.id} className={s.item}>
-          <Link to={`/movies/${movie.id}`}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <p>{movie.title}</p>
-          </Link>
+        <li key={movie.id} className={styles.movieItem}>
+          <Link to={`/movies/${movie.id}`}>{movie.title}</Link>
         </li>
       ))}
     </ul>
   );
+};
+
+MovieList.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
 
 export default MovieList;
